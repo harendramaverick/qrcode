@@ -17,6 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.microsoft.qrcode.ui.theme.QrcodeTheme
@@ -208,4 +209,13 @@ fun PasswordRule(text: String, satisfied: Boolean) {
             fontSize = 14.sp
         )
     }
+}
+
+
+@Preview(showBackground = true)
+@Composable
+fun ChangePasswordScreenPreview() {
+    ChangePasswordScreen (
+        onBack = {  }
+    )
 }
