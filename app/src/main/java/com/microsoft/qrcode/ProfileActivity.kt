@@ -6,19 +6,19 @@ import androidx.activity.compose.setContent
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.ChevronRight
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.painterResource
@@ -26,201 +26,215 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.microsoft.qrcode.ui.theme.QrcodeTheme
-
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.CreditCard
+import androidx.compose.material.icons.filled.BarChart
+import androidx.compose.material.icons.filled.Notifications
+import androidx.compose.material.icons.filled.Security
+import androidx.compose.material.icons.filled.Help
+import androidx.compose.material.icons.filled.Logout
+import androidx.compose.material.icons.filled.Edit
+import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            QrcodeTheme() {
+            MaterialTheme {
                 ProfileScreen(
-                    onBack = { finish() },
-                    onLogout = { /* logout */ }
+                    onBackClick = { finish() },
+                    onLogoutClick = {
+                    }
                 )
             }
         }
     }
 }
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileScreen(
-    onBack: () -> Unit,
-    onLogout: () -> Unit
+    onBackClick: () -> Unit,
+    onLogoutClick: () -> Unit
 ) {
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Profile") },
-                navigationIcon = {
-                    IconButton(onClick = onBack) {
-                        Icon(Icons.Default.ArrowBack, null)
-                    }
-                }
-            )
-        }
-    ) { padding ->
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(Color.White)
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = 16.dp)
+    ) {
 
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState())
-                .padding(horizontal = 16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally
+        Spacer(modifier = Modifier.height(12.dp))
+
+        // Top bar
+        Row(
+            verticalAlignment = Alignment.CenterVertically
         ) {
+            IconButton(onClick = onBackClick) {
+                Icon(
+                    imageVector = Icons.Default.ArrowBack,
+                    contentDescription = "Back"
+                )
+            }
 
-            Spacer(Modifier.height(24.dp))
-
-            ProfileHeader()
-
-            Spacer(Modifier.height(32.dp))
-
-            ProfileMenuItem(
-                icon = Icons.Default.Person,
-                title = "Personal Information"
-            )
-
-            ProfileMenuItem(
-                icon = Icons.Default.CreditCard,
-                title = "Payment Methods"
-            )
-
-            ProfileMenuItem(
-                icon = Icons.Default.Notifications,
-                title = "Notification Settings"
-            )
-
-            ProfileMenuItem(
-                icon = Icons.Default.Help,
-                title = "Help & Support"
-            )
-
-            Spacer(Modifier.height(40.dp))
-
-            LogoutButton(onLogout)
-
-            Spacer(Modifier.height(24.dp))
+            Spacer(modifier = Modifier.width(8.dp))
 
             Text(
-                "Metro Ticketing v2.4.0",
-                fontSize = 12.sp,
-                color = Color.Gray
+                text = "Profile",
+                fontSize = 20.sp,
+                fontWeight = FontWeight.SemiBold
             )
-
-            Spacer(Modifier.height(16.dp))
         }
-    }
-}
-@Composable
-fun ProfileHeader() {
-    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Profile image
+        Box(
+            modifier = Modifier.fillMaxWidth(),
+            contentAlignment = Alignment.Center
+        ) {
+            Box {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_profile), // replace with your image
+                    contentDescription = "Profile",
+                    modifier = Modifier
+                        .size(120.dp)
+                        .clip(CircleShape)
+                        .border(2.dp, Color(0xFFE3ECFF), CircleShape),
+                    contentScale = ContentScale.Crop
+                )
+
+                Box(
+                    modifier = Modifier
+                        .size(36.dp)
+                        .clip(CircleShape)
+                        .background(Color(0xFF2979FF))
+                        .align(Alignment.BottomEnd),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Edit,
+                        contentDescription = "Edit",
+                        tint = Color.White,
+                        modifier = Modifier.size(18.dp)
+                    )
+                }
+            }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+
+        Text(
+            text = "Alex Johnson",
+            fontSize = 22.sp,
+            fontWeight = FontWeight.Bold,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
+        )
+
+        Spacer(modifier = Modifier.height(8.dp))
 
         Box(
             modifier = Modifier
-                .size(110.dp)
-                .background(Color.White, CircleShape),
-            contentAlignment = Alignment.Center
+                .align(Alignment.CenterHorizontally)
+                .background(Color(0xFFEAF2FF), RoundedCornerShape(20.dp))
+                .padding(horizontal = 16.dp, vertical = 6.dp)
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.profile_avatar),
-                contentDescription = null,
-                modifier = Modifier
-                    .size(100.dp)
-                    .clip(CircleShape)
+            Text(
+                text = "Frequent Commuter",
+                color = Color(0xFF2979FF),
+                fontSize = 14.sp
             )
         }
 
-        Spacer(Modifier.height(16.dp))
+        Spacer(modifier = Modifier.height(16.dp))
+
+        // Options
+        ProfileOptionItem(Icons.Default.Person, "Personal Information")
+        ProfileOptionItem(Icons.Default.CreditCard, "Payment Methods")
+        ProfileOptionItem(Icons.Default.BarChart, "Trip Statistics")
+        ProfileOptionItem(Icons.Default.Notifications, "Notification Settings")
+        ProfileOptionItem(Icons.Default.Security, "Security & Password")
+        ProfileOptionItem(Icons.Default.Help, "Support")
+
+        Spacer(modifier = Modifier.height(32.dp))
+
+        // Logout
+        OutlinedButton(
+            onClick = onLogoutClick,
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(52.dp),
+            border = BorderStroke(1.dp, Color.Red),
+            colors = ButtonDefaults.outlinedButtonColors(
+                contentColor = Color.Red
+            )
+        ) {
+            Icon(Icons.Default.Logout, contentDescription = "Logout")
+            Spacer(modifier = Modifier.width(8.dp))
+            Text("Logout")
+        }
+
+        Spacer(modifier = Modifier.height(24.dp))
 
         Text(
-            "Alex Johnson",
-            fontSize = 22.sp,
-            fontWeight = FontWeight.Bold
+            text = "MetroPass iOS v2.4.1",
+            fontSize = 12.sp,
+            color = Color.Gray,
+            modifier = Modifier.align(Alignment.CenterHorizontally)
         )
 
-        Text(
-            "+1 555-0123",
-            color = Color(0xFF4F7FFF),
-            fontSize = 16.sp
-        )
+        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 @Composable
-fun ProfileMenuItem(
+fun ProfileOptionItem(
     icon: ImageVector,
     title: String,
     onClick: () -> Unit = {}
 ) {
-    Card(
-        shape = RoundedCornerShape(16.dp),
+    Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 6.dp),
-        onClick = onClick
+            .clickable { onClick() }
+            .padding(vertical = 14.dp),
+        verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
+
+        Box(
             modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .size(40.dp)
+                .background(Color(0xFFEAF2FF), RoundedCornerShape(10.dp)),
+            contentAlignment = Alignment.Center
         ) {
-
-            Box(
-                modifier = Modifier
-                    .size(44.dp)
-                    .background(Color(0xFFEAF1FF), RoundedCornerShape(12.dp)),
-                contentAlignment = Alignment.Center
-            ) {
-                Icon(
-                    icon,
-                    contentDescription = null,
-                    tint = Color(0xFF2F6BFF)
-                )
-            }
-
-            Spacer(Modifier.width(16.dp))
-
-            Text(
-                title,
-                fontSize = 16.sp,
-                modifier = Modifier.weight(1f)
-            )
-
             Icon(
-                Icons.Default.ChevronRight,
-                contentDescription = null,
-                tint = Color.Gray
+                imageVector = icon,
+                contentDescription = title,
+                tint = Color(0xFF2979FF)
             )
         }
-    }
-}
-@Composable
-fun LogoutButton(onLogout: () -> Unit) {
-    OutlinedButton(
-        onClick = onLogout,
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(56.dp),
-        colors = ButtonDefaults.outlinedButtonColors(
-            contentColor = Color(0xFFD32F2F)
-        ),
-        border = BorderStroke(1.dp, Color(0xFFF5C6C6)),
-        shape = RoundedCornerShape(16.dp)
-    ) {
-        Icon(Icons.Default.Logout, null)
-        Spacer(Modifier.width(8.dp))
+
+        Spacer(modifier = Modifier.width(16.dp))
+
         Text(
-            "Logout",
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium
+            text = title,
+            fontSize = 16.sp,
+            modifier = Modifier.weight(1f)
+        )
+
+        Icon(
+            imageVector = Icons.Default.ChevronRight,
+            contentDescription = "Next",
+            tint = Color.Gray
         )
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen(
-        onBack = {  },
-        onLogout = {  }
+    ProfileScreen (
+        onBackClick     = {},
+        onLogoutClick   = {}
     )
 }

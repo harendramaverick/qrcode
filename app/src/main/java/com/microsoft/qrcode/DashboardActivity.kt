@@ -1,5 +1,6 @@
 package com.microsoft.qrcode
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,10 +17,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.microsoft.qrcode.compose.BottomNavigationBar
 import com.microsoft.qrcode.ui.theme.QrcodeTheme
 
 class DashboardActivity : ComponentActivity() {
@@ -36,6 +39,7 @@ class DashboardActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DashboardScreen() {
+    val context = LocalContext.current
     val scrollState = rememberScrollState()
     Scaffold(
         topBar = {
@@ -54,6 +58,8 @@ fun DashboardScreen() {
             )
         },
         bottomBar = {
+            BottomNavigationBar()
+            /*
             NavigationBar {
                 NavigationBarItem(
                     selected = true,
@@ -75,11 +81,15 @@ fun DashboardScreen() {
                 )
                 NavigationBarItem(
                     selected = false,
-                    onClick = {},
+                    onClick = {
+                        val intent = Intent(context, ProfileActivity::class.java)
+                        context.startActivity(intent)
+                    },
                     icon = { Icon(Icons.Default.Person, null) },
                     label = { Text("Profile") }
-                )
+               )
             }
+            */
         }
     ) { padding ->
 
