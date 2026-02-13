@@ -59,37 +59,6 @@ fun DashboardScreen() {
         },
         bottomBar = {
             BottomNavigationBar()
-            /*
-            NavigationBar {
-                NavigationBarItem(
-                    selected = true,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.Home, null) },
-                    label = { Text("Home") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.ConfirmationNumber, null) },
-                    label = { Text("Tickets") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.ReceiptLong, null) },
-                    label = { Text("History") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {
-                        val intent = Intent(context, ProfileActivity::class.java)
-                        context.startActivity(intent)
-                    },
-                    icon = { Icon(Icons.Default.Person, null) },
-                    label = { Text("Profile") }
-               )
-            }
-            */
         }
     ) { padding ->
 

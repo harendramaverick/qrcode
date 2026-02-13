@@ -1,5 +1,7 @@
 package com.microsoft.qrcode
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -37,32 +39,56 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import com.microsoft.qrcode.compose.BottomNavigationBar
 
 class ProfileActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             MaterialTheme {
-                ProfileScreen(
-                    onBackClick = { finish() },
-                    onLogoutClick = {
-                    }
+                ProfileScreenMain(
+                    onLogoutClick = { finish() }
                 )
             }
         }
     }
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun ProfileScreenMain(
+ onLogoutClick: () -> Unit
+) {
+    Scaffold(
+        topBar = {
+        },
+        bottomBar = {
+            BottomNavigationBar()
+        }
+    ) { padding ->
+        ProfileScreen(
+            Modifier
+                .fillMaxSize()
+                .padding(padding)
+                .background(Color.White)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = 16.dp),
+            onLogoutClick = { onLogoutClick() }
+        )
+    }
+}
+
+
 @Composable
 fun ProfileScreen(
-    onBackClick: () -> Unit,
+    modifier : Modifier,
     onLogoutClick: () -> Unit
 ) {
+    val context = LocalContext.current
+    val activity = (context as? Activity)
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(Color.White)
-            .verticalScroll(rememberScrollState())
-            .padding(horizontal = 16.dp)
+        modifier = modifier
     ) {
 
         Spacer(modifier = Modifier.height(12.dp))
@@ -71,7 +97,11 @@ fun ProfileScreen(
         Row(
             verticalAlignment = Alignment.CenterVertically
         ) {
-            IconButton(onClick = onBackClick) {
+            IconButton(onClick = {
+                val intent = Intent(context, DashboardActivity::class.java)
+                context.startActivity(intent)
+                activity?.finish()
+            }) {
                 Icon(
                     imageVector = Icons.Default.ArrowBack,
                     contentDescription = "Back"
@@ -233,8 +263,7 @@ fun ProfileOptionItem(
 @Preview(showBackground = true)
 @Composable
 fun ProfileScreenPreview() {
-    ProfileScreen (
-        onBackClick     = {},
-        onLogoutClick   = {}
+    ProfileScreenMain (
+        onLogoutClick = {  }
     )
 }

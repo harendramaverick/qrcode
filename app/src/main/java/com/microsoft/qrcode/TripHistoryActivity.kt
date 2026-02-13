@@ -1,5 +1,7 @@
 package com.microsoft.qrcode
 
+import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -16,10 +18,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.microsoft.qrcode.compose.BottomNavigationBar
 import com.microsoft.qrcode.ui.theme.QrcodeTheme
 
 
@@ -56,8 +60,7 @@ class TripHistoryActivity : ComponentActivity() {
         setContent {
             QrcodeTheme(){
                TripHistoryScreen(
-                   trips = sampleTrips,
-                   onBack = { finish() }
+                   trips = sampleTrips
                )
            }
         }
@@ -66,15 +69,20 @@ class TripHistoryActivity : ComponentActivity() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TripHistoryScreen(
-    trips: List<Trip>,
-    onBack: () -> Unit
+    trips: List<Trip>
 ) {
+    val context = LocalContext.current
+    val activity = (context as? Activity)
     Scaffold(
         topBar = {
             TopAppBar(
                 title = { Text("Trip History") },
                 navigationIcon = {
-                    IconButton(onClick = onBack) {
+                    IconButton(onClick = {
+                        val intent = Intent(context, DashboardActivity::class.java)
+                        context.startActivity(intent)
+                        activity?.finish()
+                    }) {
                         Icon(Icons.Default.ArrowBack, null)
                     }
                 },
@@ -86,32 +94,7 @@ fun TripHistoryScreen(
             )
         },
         bottomBar = {
-            NavigationBar {
-                NavigationBarItem(
-                    selected = true,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.Home, null) },
-                    label = { Text("Home") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.ConfirmationNumber, null) },
-                    label = { Text("Tickets") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.ReceiptLong, null) },
-                    label = { Text("History") }
-                )
-                NavigationBarItem(
-                    selected = false,
-                    onClick = {},
-                    icon = { Icon(Icons.Default.Person, null) },
-                    label = { Text("Profile") }
-                )
-            }
+            BottomNavigationBar()
         }
     ) { padding ->
 
@@ -256,7 +239,6 @@ fun Footer() {
 @Composable
 fun TripHistoryScreenPreview() {
     TripHistoryScreen(
-        trips = sampleTrips,
-        onBack = {  }
+        trips = sampleTrips
     )
 }
